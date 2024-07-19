@@ -30,7 +30,7 @@ export class TaskService {
     tasks?: Task[];
   }> {
     try {
-      const tasks = await this.taskModel.find().exec();
+      const tasks = await this.taskModel.find().sort({ updatedAt: -1 }).exec();
       return { success: true, message: 'Tasks retrieved successfully', tasks };
     } catch (error) {
       return { success: false, message: 'Failed to retrieve tasks' };
