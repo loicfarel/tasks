@@ -9,12 +9,19 @@ async function bootstrap() {
     .setTitle('Documentation API')
     .setDescription('The  API description')
     .setVersion('1.0')
-    .addTag('actor')
+    .addTag('Tasks managment')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+
+  app.enableCors({
+    origin: process.env.FRONTEND_URI,
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization',
+  });
+
   await app.listen(3000);
 }
 bootstrap();

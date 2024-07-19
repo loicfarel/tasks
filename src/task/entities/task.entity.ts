@@ -46,7 +46,7 @@ export class Task {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   description: string;
 
   @Prop({ type: Object, required: true })
@@ -55,8 +55,8 @@ export class Task {
   @Prop({ type: Object, required: true })
   priority: Priority;
 
-  @Prop({ required: true })
-  assign: string;
+  @Prop({ required: false })
+  assign?: string;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

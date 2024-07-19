@@ -19,5 +19,5 @@ export class CreateTaskDto implements Omit<Task, 'id'> {
   @IsOptional()
   @IsString()
   @IsEmail()
-  assign: string;
+  assign?: string;
 }

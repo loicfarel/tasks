@@ -20,5 +20,5 @@ export class UpdateTaskDto implements Omit<CreateTaskDto, 'date'> {
   @IsOptional()
   @IsString()
   @IsEmail()
-  assign: string;
+  assign?: string;
 }
