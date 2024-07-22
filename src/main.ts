@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Maintainer } from './config/config.type';
 import { ConfigService } from '@nestjs/config';
@@ -29,6 +29,11 @@ async function bootstrap() {
     // allowedHeaders: 'Content-Type,Authorization',
   });
 
-  await app.listen(3000);
+  await app.listen(config.get<number>('port') || 3000);
+
+  Logger.log(
+    'App running at http://localhost:' + config.get<number>('port') || 3000,
+    'NestApplication',
+  );
 }
 bootstrap();
