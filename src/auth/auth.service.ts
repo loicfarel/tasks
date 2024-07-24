@@ -17,14 +17,18 @@ export class AuthService {
     const passwordMatch = await verify(loginDto.password, user.password);
     if (!passwordMatch) throw new UnauthorizedException('Invalid credentials');
 
-    return this.generateUserToken(user.id);
-  }
-
-  async generateUserToken(userId: string) {
-    const accessToken = this.jwtService.sign({ userId });
+    const payload = {
+      user,
+      sub: user.id,
+    };
 
     return {
-      accessToken,
+      user: payload.user,
+      access_token: await this.generateUserToken(payload),
     };
+  }
+
+  async generateUserToken(payload: any) {
+    return await this.jwtService.signAsync(payload);
   }
 }
