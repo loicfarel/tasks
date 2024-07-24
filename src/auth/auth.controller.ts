@@ -7,6 +7,7 @@ import { LoginDto } from './dto/login.dto';
 import { Public } from './decorators/public.decorator';
 
 @ApiTags('Authentification')
+@Public()
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -14,12 +15,11 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
-  @Public()
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
   }
-  @Public()
+
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return await this.authService.login(loginDto);

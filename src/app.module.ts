@@ -6,9 +6,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
-import { JwtAuthGuard } from './guards/auth/jwt-auth.guard';
+import { JwtGuard } from './auth/guards/jwt.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/strategy/jwt.strategy';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -16,20 +17,6 @@ import { JwtModule } from '@nestjs/jwt';
       isGlobal: true,
       cache: true,
       load: [configuration],
-    }),
-
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
-        return {
-          secret: configService.get<string>('jwtSecret'),
-          signOptions: {
-            expiresIn: configService.get<string>('jwtTtl'),
-          },
-        };
-      },
-      global: true,
-      inject: [ConfigService],
     }),
 
     MongooseModule.forRootAsync({
@@ -51,8 +38,13 @@ import { JwtModule } from '@nestjs/jwt';
     AppService,
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: JwtGuard,
     },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    JwtStrategy,
   ],
 })
 export class AppModule {}

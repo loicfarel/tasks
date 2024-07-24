@@ -10,6 +10,21 @@ export class AuthService {
     private readonly userService: UserService,
     private jwtService: JwtService,
   ) {}
+
+  async validateUser(email: string, password: string) {
+    const user = await this.userService.findOneByEmail(email);
+    if (!user) {
+      return null;
+    }
+
+    const passwordMatch = await verify(password, user.password);
+    if (!passwordMatch) {
+      return null;
+    }
+
+    return user;
+  }
+
   async login(loginDto: LoginDto) {
     const user = await this.userService.findOneByEmail(loginDto.email);
     if (!user) throw new UnauthorizedException('Invalid credentials');
@@ -18,12 +33,10 @@ export class AuthService {
     if (!passwordMatch) throw new UnauthorizedException('Invalid credentials');
 
     const payload = {
-      user,
       sub: user.id,
+      user,
     };
-
     return {
-      user: payload.user,
       access_token: await this.generateUserToken(payload),
     };
   }

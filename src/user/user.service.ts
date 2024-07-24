@@ -10,7 +10,6 @@ import { User, UserDocument } from './entities/user.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { hash } from 'src/helpers/hash';
-import { ApiResponse } from 'globalType';
 
 @Injectable()
 export class UserService {
@@ -19,7 +18,7 @@ export class UserService {
     private readonly userModel: Model<UserDocument>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<ApiResponse<User>> {
+  async create(createUserDto: CreateUserDto) {
     const { email, password, role } = createUserDto;
 
     try {
@@ -40,7 +39,7 @@ export class UserService {
 
       return {
         success: true,
-        data: user,
+        user,
       };
     } catch (error) {
       console.error('Error creating user:', error);
