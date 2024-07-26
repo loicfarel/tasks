@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import configuration from './config/configuration';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -41,6 +42,8 @@ import configuration from './config/configuration';
     }),
 
     UserModule,
+
+    TaskModule,
 
     AuthModule,
   ],
